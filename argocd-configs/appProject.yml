@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: cision-devops
+  namespace: argocd
+spec:
+  description: Project for cision devops organization
+  destinations:
+  - namespace: '*'
+    server: '*'
+  sourceRepos:
+  - https://github.com/araza-sre/argo-example
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
+  namespaceResourceWhitelist:
+  - group: "*"
+    kind: "*"
