@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: app-generator-prod-cision
+  name: app-generator-qa-cision
   namespace: argocd
 spec:
   generators:
@@ -10,10 +10,10 @@ spec:
         - clusters:
             selector:
               matchLabels:
-                development: "true"
+                dev: "true"
             values: 
-              revision: HEAD # staging clusters use HEAD branch
-              env: prod
+              revision: HEAD # dev clusters use HEAD branch
+              env: dev
         - git:
             repoURL: https://github.com/araza-sre/argo-example
             revision: HEAD
@@ -26,7 +26,7 @@ spec:
     spec:
       project: cision-devops
       source:
-        repoURL: https://github.com/syed-zizou/org-two
+        repoURL: https://github.com/araza-sre/argo-example
         targetRevision: '{{values.revision}}'
         path: '{{path.basename}}/{{values.env}}'
       destination:

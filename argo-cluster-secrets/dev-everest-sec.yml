@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dev-cision
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: "cluster"
+    dev: "true"
+stringData:
+  # Within Kubernetes these fields are actually encoded in Base64; they are decoded here for convenience. 
+  # (They are likewise decoded when passed as parameters by the Cluster generator)
+  project: cision-devops
+  name: dev-cision-eks
+  server: https://kubernetes.default.svc
