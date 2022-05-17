@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ .Values.applicationsetName }}
+  labels:
+    {{- include "appset.labels" . | nindent 4 }}
+  #namespace: argocd
+spec:
+  generators:
+  - matrix:
+      generators:
+        - list:
+            elements:
+            - server: {{  .Values.server  }}
+              name: {{ .Values.clusterName }}
+        - git:
+            repoURL: {{  .Values.repoURL  }}
+            revision: HEAD
+            directories:
+            - path: {{  .Values.path  }}
+  template:
+    metadata:
+      name: '{{ .Values.clusterName }}-{{ .Values.applicationsetName }}'
+      namespace: {{ .Values.namespace }}
+    spec:
+      project: {{ .Values.project }}
+      source:
+        repoURL: {{ .Values.repoURL }}
+        targetRevision: {{ .Values.targetRevision }}
+        path: {{  .Values.path  }}
+      destination:
+        server: {{ .Values.server}}
+        namespace: {{ .Values.namespace }}
+      syncPolicy:
+        automated: 
+          prune: true
+        syncOptions:
+        - CreateNamespace=true

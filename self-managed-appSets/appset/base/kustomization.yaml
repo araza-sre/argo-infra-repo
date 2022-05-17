@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: appset-system
+commonLabels:
+  org: appset-root
+helmGlobals:
+  chartHome: ../../../charts
+helmCharts:
+- name: appset
+  releaseName: appset
+  namespace: appset-system  
+  valuesFile: values.yaml
+  #includeCRDs: true
+  
